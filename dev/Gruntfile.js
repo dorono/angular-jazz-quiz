@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     'use strict';
 
@@ -69,6 +69,19 @@ module.exports = function (grunt) {
             }
         },
 
+        // Make sure code styles are up to par and there are no obvious mistakes
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: [
+                '<%= config.jsSrc %>/{,*/}*.js',
+                '!<%= config.jsSrc %>/lib.js',
+                '!<%= config.app %>/<%= config.jsSrc %>/global.js'
+            ]
+        },
+
+
         // Concatenate all of our js files
         concat: {
             scripts: {
@@ -78,10 +91,23 @@ module.exports = function (grunt) {
             lib: {
                 files: {
                     '<%= config.app %>/<%= config.jsDest %>/lib.js': [
-                    '<%= config.bower %>/jquery/dist/jquery.js',
-                    '<%= config.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
-                    '<%= config.bower %>/angular/angular.js',
-                    '<%= config.bower %>/angular-route/angular-route.js']
+                        '<%= config.bower %>/jquery/dist/jquery.js',
+                        '<%= config.bower %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+                        '<%= config.bower %>/angular/angular.js',
+                        '<%= config.bower %>/angular-route/angular-route.js'
+                    ]
+                }
+            }
+        },
+
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: {
+                    '<%= config.app %>/<%= config.jsDest %>/lib.js': ['<%= config.app %>/<%= config.jsDest %>/lib.js'],
+                    '<%= config.app %>/<%= config.jsDest %>/global.js': ['<%= config.app %>/<%= config.jsDest %>/global.js']
                 }
             }
         },
@@ -107,7 +133,7 @@ module.exports = function (grunt) {
                 }
             },
 
-             scripts: {
+            scripts: {
                 expand: true,
                 dot: true,
                 cwd: '<%= config.jsSrc %>',
@@ -144,7 +170,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: '<%= config.jsSrc %>/**/*.js',
-                tasks: ['concat', 'copy:scripts']
+                tasks: ['jshint', 'concat', 'copy:scripts']
             }
         }
     });
@@ -156,6 +182,18 @@ module.exports = function (grunt) {
         'autoprefixer',
         'concat',
         'copy',
+        'watch'
+    ]);
+
+    grunt.registerTask('build', [
+        'clean:temp',
+        'htmlhint',
+        'compass',
+        'autoprefixer',
+        'concat',
+        'uglify',
+        'copy',
+        'jshint',
         'watch'
     ]);
 
