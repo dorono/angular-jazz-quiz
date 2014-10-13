@@ -77,6 +77,8 @@ module.exports = function(grunt) {
             all: [
                 '<%= config.jsSrc %>/{,*/}*.js',
                 '!<%= config.jsSrc %>/lib.js',
+                // remember to remove this line below once the app is all in place, we need app.js!
+                '!<%= config.jsSrc %>/app.js',
                 '!<%= config.app %>/<%= config.jsSrc %>/global.js'
             ]
         },
@@ -85,8 +87,14 @@ module.exports = function(grunt) {
         // Concatenate all of our js files
         concat: {
             scripts: {
-                src: '<%= config.jsSrc %>/*.js',
-                dest: '<%= config.app %>/<%= config.jsDest %>/global.js'
+                files: {
+                        '<%= config.app %>/<%= config.jsDest %>/global.js': [
+                        // remember to make this line below pull up app.js
+                        '<%= config.jsSrc %>/app-test.js',
+                        '<%= config.jsSrc %>/controllers.js',
+                        '<%= config.jsSrc %>/services.js'
+                    ]
+                }
             },
             lib: {
                 files: {
@@ -152,6 +160,15 @@ module.exports = function(grunt) {
             }
         },
 
+        // remove all unused css
+        uncss: {
+            dist: {
+                files: {
+                    '<%= config.app %>/<%= config.cssDest %>/global.css': ['<%= config.app %>/**/*.html']
+                }
+            }
+        },
+
         watch: {
             options: {
                 debounceDelay: 500,
@@ -194,7 +211,6 @@ module.exports = function(grunt) {
         'uglify',
         'copy',
         'jshint',
-        'watch'
+        'uncss'
     ]);
-
 };
