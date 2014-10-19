@@ -1,18 +1,19 @@
 <question>
-    <h2>{{quiz.quizContent[quiz.questNum].question}}</h2>
+    <h2>{{quizContent[questNum].question}}</h2>
     <ul>
-        <li ng-repeat="answer in quiz.quizContent[quiz.questNum].answers">
+        <li ng-repeat="answer in quizContent[questNum].answers">
             <label>
-                <input type="radio" name="q_{{quiz.questNum + 1}}" value="question_{{quiz.questNum + 1}}_answers_{{$index + 1}}" ng-model="quiz.submittedAnswer" ng-disabled="quiz.nextBtnDisplay">
+                <input type="radio" name="q_{{questNum + 1}}" value="question_{{questNum + 1}}_answers_{{$index + 1}}" ng-model="blah" ng-disabled="submitted">
                 {{answer}}
             </label>
         </li>
     </ul>
 </question>
 
-<button class="btn-default btn submit-btn" ng-click="quiz.submitAnswer()" ng-disabled="!quiz.submittedAnswer">Submit my answer!</button>
+<button class="btn-default btn submit-btn" ng-click="submitAnswer()" ng-disabled="!blah">Submit my answer!</button>
 
-<feedback ng-show="quiz.feedbackDisplay">
-    <h4 class="{{quiz.answerStatusClass}}">{{feedback}}</h4>
+<feedback ng-show="submitted">
+    <!--TODO: remove css class name strings from JS -->
+    <h4 class="{{valid && 'success' || 'error'}}">{{feedback}}</h4>
 </feedback>
-<button ng-click="quiz.nextQuestion()" class="next-btn btn btn-default pull-right" ng-show="quiz.nextBtnDisplay">Next Question...</button>
+<button ng-click="nextQuestion(questNum)" class="next-btn btn btn-default pull-right" ng-show="submitted">Next Question...</button>
