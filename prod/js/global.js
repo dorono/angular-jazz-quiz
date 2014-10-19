@@ -1,62 +1,73 @@
-var app = angular.module('myApp', ['myApp.services', 'myApp.controllers', 'ngRoute']);
+(function() {
 
-app.config(['$routeProvider', function($routeProvider) {
+    var JazzQuiz = angular.module('JazzQuiz', ['JazzQuiz.services', 'JazzQuiz.controllers', 'ngRoute']);
 
-  $routeProvider.when('/main', {
-    templateUrl: '/partials/app-test.html',
-    controller: 'ResponsesCtrl',
-    resolve: {
-      responses: function(responseLibrary) {
-        return responseLibrary.getResponses();
-      }
-    }
-  });
+    JazzQuiz.config(['$routeProvider', function($routeProvider) {
 
-  $routeProvider.otherwise({redirectTo: '/'});
+        $routeProvider
+        .when('/', {
+            templateUrl: '/partials/quiz.html',
+            controller: 'QuizCtrl',
+            resolve: {
+                questions: function (quizFactory) {
+                    return quizFactory.getQuestions();
+                },
+                responses: function (quizFactory) {
+                    return quizFactory.getResponses();
+                }
 
-}]);
+                // TODO: create handler for if resolve fails
+            }
+        });
 
+        $routeProvider.otherwise({redirectTo: '/'});
 
-// app.run(['$rootScope', function($root) {
+    }]);
 
-//   $root.$on('$routeChangeStart', function(e, curr, prev) {
-//     if (curr.$$route && curr.$$route.resolve) {
-//       // Show a loading message until promises are not resolved
-//       $root.loadingView = true;
-//     }
-//   });
+})();
 
-//   $root.$on('$routeChangeSuccess', function(e, curr, prev) {
-//     // Hide loading message
-//     $root.loadingView = false;
-//   });
+    var ctrl = angular.module('JazzQuiz.controllers', []);
 
+    ctrl.controller('QuizCtrl', function($scope, quizFactory, questions, responses) {
+        // all controllers do is to populate data into scope
+        $scope.quizContent = questions;
+        $scope.responses = responses;
 
-var ctrl = angular.module('myApp.controllers', []);
+        $scope.questNum = 0;
 
-ctrl.controller('ResponsesCtrl', ['$scope', 'responses', function($scope, responses) {
-    $scope.responses = responses.data;
-}]);
-
-var services = angular.module('myApp.services', []);
+        $scope.submitAnswer = quizFactory.submitAnswer;
+    });
 
 
-services.factory('responseLibrary', ['$http', function($http) {
 
-    var resp = {
+//    // controller that handles the display of questions and handling of answers
+//    ctrl.controller('QuizCtrl', function ($scope, $http, $location, $rootScope, $timeout, questions, responses){
+//
+//        $scope.quizContent = questions;
+//        $scope.quizResponses = responses;
+//
+//        //this spits out the entire object in the console
+//        console.log(questions);
+//
+//        //this gives me an error
+//        //console.log(questions[0].correctAnswer);
+//
+//        // more to come...
+//    });
 
-        getResponses: function() {
+var services = angular.module('JazzQuiz.services' ,[]);
 
-            var promise = $http({ method: 'GET', url: '../json/submissionResponses.json' }).success(function(data, status, headers, config) {
-                return data;
+services.factory('quizFactory', ['$http', function($http){
+    return {
+        getQuestions: function(){
+            return $http.get('../json/questions.json').then(function(result){
+                return result.data;
             });
-
-            return promise;
-
+        },
+        getResponses: function(){
+            return $http.get('../json/submissionResponses.json').then(function(result){
+                return result.data;
+            });
         }
-
     }
-
-    return resp;
-
 }]);
