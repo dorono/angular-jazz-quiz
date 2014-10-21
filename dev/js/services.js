@@ -7,7 +7,7 @@ services.factory('quizFactory', ['$http', function($http){
     return {
         getQuestions: function(){
             return $http.get('../json/questions.json').then(function(result){
-                return questions = result.data;
+                return result.data;
             });
         },
         getResponses: function(){

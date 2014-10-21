@@ -1,6 +1,7 @@
     var ctrl = angular.module('JazzQuiz.controllers', []);
 
     ctrl.controller('QuizCtrl', function($scope, quizFactory, questions, responses) {
+
         // all controllers do is to populate data into scope
         $scope.quizContent = questions;
         $scope.responses = responses;
@@ -10,9 +11,10 @@
         //$scope.data.answer = false;
         $scope.valid = null;
 
+
         $scope.submitAnswer = function(){
 
-            $scope.valid = quizFactory.checkAnswer($scope.data.answer,questNum);
+            $scope.valid = quizFactory.checkAnswer($scope.data.answer,$scope.questNum);
             $scope.submitted = true;
             console.log("submitted");
 
