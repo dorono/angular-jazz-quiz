@@ -29,13 +29,37 @@
     var ctrl = angular.module('JazzQuiz.controllers', []);
 
     ctrl.controller('QuizCtrl', function($scope, quizFactory, questions, responses) {
+
         // all controllers do is to populate data into scope
         $scope.quizContent = questions;
         $scope.responses = responses;
 
         $scope.questNum = 0;
+        $scope.data = {};
+        //$scope.data.answer = false;
+        $scope.valid = null;
 
-        $scope.submitAnswer = quizFactory.submitAnswer;
+
+        $scope.submitAnswer = function(){
+
+            $scope.valid = quizFactory.checkAnswer($scope.data.answer,$scope.questNum);
+            $scope.submitted = true;
+            console.log("submitted");
+
+
+        };
+
+        $scope.nextQuestion = function () {
+            // queue up the next question
+            $scope.questNum++;
+            // hide the feedback
+            $scope.submitted = false;
+            $scope.data = {};
+            // hide the "next" button
+            // $scope.nextBtnDisplay = false;
+        }
+
+
     });
 
 
@@ -58,6 +82,9 @@
 var services = angular.module('JazzQuiz.services' ,[]);
 
 services.factory('quizFactory', ['$http', function($http){
+
+    var questions = [];
+
     return {
         getQuestions: function(){
             return $http.get('../json/questions.json').then(function(result){
@@ -68,6 +95,13 @@ services.factory('quizFactory', ['$http', function($http){
             return $http.get('../json/submissionResponses.json').then(function(result){
                 return result.data;
             });
+        },
+        checkAnswer: function(submittedAnswer,questNum){
+
+            // check to see if answer is correct and supply appropriate response
+            var correctAnswer = questions[questNum].correctAnswer;
+
+            return submittedAnswer === correctAnswer;
         }
-    }
+    };
 }]);
