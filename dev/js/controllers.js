@@ -14,7 +14,7 @@
 
         $scope.submitAnswer = function(){
 
-            $scope.valid = quizFactory.checkAnswer($scope.data.answer,$scope.questNum);
+            $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer,$scope.questNum,$scope.quizContent);
             $scope.submitted = true;
             console.log("submitted");
 
