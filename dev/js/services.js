@@ -15,10 +15,10 @@ services.factory('quizFactory', ['$http', function($http){
                 return result.data;
             });
         },
-        checkAnswer: function(submittedAnswer,questNum){
+        checkAnswer: function(submittedAnswer,questNum,questionList){
 
             // check to see if answer is correct and supply appropriate response
-            var correctAnswer = questions[questNum].correctAnswer;
+            console.log("here is the question data: " + questionList);
 
             return submittedAnswer === correctAnswer;
         }

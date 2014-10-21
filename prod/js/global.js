@@ -42,7 +42,7 @@
 
         $scope.submitAnswer = function(){
 
-            $scope.valid = quizFactory.checkAnswer($scope.data.answer,$scope.questNum);
+            $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer,$scope.questNum,$scope.quizContent);
             $scope.submitted = true;
             console.log("submitted");
 
@@ -96,12 +96,12 @@ services.factory('quizFactory', ['$http', function($http){
                 return result.data;
             });
         },
-        checkAnswer: function(submittedAnswer,questNum){
+        checkAnswer: function(submittedAnswer,questNum,questionList){
 
             // check to see if answer is correct and supply appropriate response
-            var correctAnswer = questions[questNum].correctAnswer;
+            console.log("here is the question data: " + questionList);
 
-            return submittedAnswer === correctAnswer;
+            return submittedAnswer;
         }
     };
 }]);
