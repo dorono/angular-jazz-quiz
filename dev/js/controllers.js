@@ -1,52 +1,60 @@
-    var ctrl = angular.module('JazzQuiz.controllers', []);
+var ctrl = angular.module('JazzQuiz.controllers', []);
 
-    ctrl.controller('QuizCtrl', function($scope, quizFactory, questions, responses) {
+/*************************************
+ * CONTROLLER FOR QUIZ PAGE          *
+ *************************************/
+ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, questions, responses) {
 
-        // all controllers do is to populate data into scope
-        $scope.quizContent = questions;
-        $scope.responses = responses;
+    // all controllers do is to populate data into scope
+    $scope.quizContent = questions;
+    $scope.responses = responses;
+    $scope.questNum = 0;
+    $scope.data = {};
+    $scope.valid = null;
+    $scope.displayNextBtn = false;
+    var numQuestions = quizFactory.countQuestions(),
+        score = 0;
 
-        $scope.questNum = 0;
-        $scope.data = {};
-        //$scope.data.answer = false;
-        $scope.valid = null;
+    $scope.submitAnswer = function() {
+        $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer, $scope.questNum, $scope.quizContent);
 
+        $scope.submitted = true;
 
-        $scope.submitAnswer = function(){
-
-            $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer,$scope.questNum,$scope.quizContent);
-            $scope.submitted = true;
-            console.log("submitted");
-
-
-        };
-
-        $scope.nextQuestion = function () {
-            // queue up the next question
-            $scope.questNum++;
-            // hide the feedback
-            $scope.submitted = false;
-            $scope.data = {};
-            // hide the "next" button
-            // $scope.nextBtnDisplay = false;
+        if ($scope.valid) {
+            score++;
+            $scope.feedback = $scope.responses[0].correct;
+        } else {
+            $scope.feedback = $scope.responses[0].incorrect;
         }
 
-
-    });
-
+        console.log("score from quiz controller: " + score);
 
 
-//    // controller that handles the display of questions and handling of answers
-//    ctrl.controller('QuizCtrl', function ($scope, $http, $location, $rootScope, $timeout, questions, responses){
-//
-//        $scope.quizContent = questions;
-//        $scope.quizResponses = responses;
-//
-//        //this spits out the entire object in the console
-//        console.log(questions);
-//
-//        //this gives me an error
-//        //console.log(questions[0].correctAnswer);
-//
-//        // more to come...
-//    });
+        if (($scope.questNum + 1) < numQuestions) {
+            $scope.displayNextBtn = true;
+        } else {
+            // if the last question has been answered, wait and then redirect to score page
+            $timeout(function () {
+                quizFactory.submitScore(score);
+                $location.path("score");
+            }, 2000);
+        }
+    };
+
+    $scope.nextQuestion = function () {
+        // queue up the next question
+        $scope.questNum++;
+        $scope.submitted = false;
+        $scope.displayNextBtn = false;
+        $scope.data = {};
+    }
+
+});
+
+/*************************************
+ * CONTROLLER FOR SCORE PAGE         *
+ *************************************/
+ctrl.controller('ScoreCtrl', function ($scope, quizFactory, success) {
+    $scope.score = quizFactory.getScore();
+    console.log("this is the score: " + $scope.score);
+});
