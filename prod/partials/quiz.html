@@ -13,6 +13,6 @@
 
 <feedback ng-show="submitted">
     <!--TODO: remove css class name strings from JS -->
-    <h4 class="{{valid && 'success' || 'error'}}">{{feedback}}</h4>
+    <h4 class="{{valid && 'bg-success' || 'bg-danger'}}">{{feedback}}</h4>
 </feedback>
-<button ng-click="nextQuestion(questNum)" class="next-btn btn btn-default pull-right" ng-show="submitted">Next Question...</button>
+<button ng-click="nextQuestion(questNum)" class="next-btn btn btn-default pull-right" ng-show="displayNextBtn">Next Question...</button>

@@ -15,7 +15,16 @@
                 responses: function (quizFactory) {
                     return quizFactory.getResponses();
                 }
-
+                // TODO: create handler for if resolve fails
+            }
+        })
+        .when('/score', {
+            templateUrl: '/partials/score.html',
+            controller: 'ScoreCtrl',
+            resolve: {
+                success: function (quizFactory) {
+                    return quizFactory.getSuccessMessages();
+                }
                 // TODO: create handler for if resolve fails
             }
         });
