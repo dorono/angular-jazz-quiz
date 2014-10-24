@@ -42,13 +42,13 @@ var ctrl = angular.module('JazzQuiz.controllers', []);
  *************************************/
 ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, questions, responses) {
 
-    // all controllers do is to populate data into scope
     $scope.quizContent = questions;
     $scope.responses = responses;
     $scope.questNum = 0;
     $scope.data = {};
     $scope.valid = null;
     $scope.displayNextBtn = false;
+
     var numQuestions = quizFactory.countQuestions(),
         score = 0;
 
@@ -64,13 +64,11 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
             $scope.feedback = $scope.responses[0].incorrect;
         }
 
-        console.log("score from quiz controller: " + score);
-
-
         if (($scope.questNum + 1) < numQuestions) {
             $scope.displayNextBtn = true;
         } else {
-            // if the last question has been answered, wait and then redirect to score page
+            /* if the last question has been answered, wait
+            and then redirect to score page */
             $timeout(function () {
                 quizFactory.submitScore(score);
                 $location.path("score");
@@ -92,8 +90,10 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
  * CONTROLLER FOR SCORE PAGE         *
  *************************************/
 ctrl.controller('ScoreCtrl', function ($scope, quizFactory, success) {
+
     $scope.score = quizFactory.getScore();
-    console.log("this is the score: " + $scope.score);
+    $scope.summaryData = quizFactory.quizSummary();
+
 });
 
 var services = angular.module('JazzQuiz.services' ,[]);
@@ -102,7 +102,12 @@ services.factory('quizFactory', ['$http', function($http){
 
     var questions = [],
         numberOfQuestions,
-        totalScore;
+        totalScore,
+        numSuccessMessages,
+        scoreLevel,
+        successMessages,
+        scorePercentage,
+        quizSuccessMessage;
 
     return {
         getQuestions: function(){
@@ -125,6 +130,8 @@ services.factory('quizFactory', ['$http', function($http){
         },
         getSuccessMessages: function(){
             return $http.get('../json/successMessages.json').then(function(result) {
+                successMessages = result.data;
+                numSuccessMessages = result.data.length;
                 return result.data;
             });
         },
@@ -134,6 +141,34 @@ services.factory('quizFactory', ['$http', function($http){
         },
         getScore: function(){
             return totalScore;
+        },
+        quizSummary: function(){
+            // calculate the percentage score
+            scorePercentage = Math.floor(Number(totalScore / numberOfQuestions * 100));
+            scoreLevel = Math.floor(Number(100 / numSuccessMessages));
+
+            // if the user got none right, give them the very first message
+            if (scorePercentage === 0) {
+                quizSuccessMessage = successMessages[0].message;
+            } else if (scorePercentage === 100) {
+                // if the user got a perfect score, give them the very last message
+                quizSuccessMessage = successMessages[numSuccessMessages - 1].message;
+            } else {
+                /* otherwise, locate the message that sits
+                within the appropriate range of scores */
+                var i;
+                for (i = 0; i < numSuccessMessages; i++) {
+                    if (scorePercentage < (scoreLevel * (i + 1))) {
+                        quizSuccessMessage = successMessages[i - 1].message;
+                        break;
+                    }
+                }
+            }
+
+            return {
+                scorePercentage: scorePercentage,
+                quizSuccessMessage: quizSuccessMessage
+            }
         }
     };
 }]);
