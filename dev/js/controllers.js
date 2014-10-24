@@ -5,13 +5,13 @@ var ctrl = angular.module('JazzQuiz.controllers', []);
  *************************************/
 ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, questions, responses) {
 
-    // all controllers do is to populate data into scope
     $scope.quizContent = questions;
     $scope.responses = responses;
     $scope.questNum = 0;
     $scope.data = {};
     $scope.valid = null;
     $scope.displayNextBtn = false;
+
     var numQuestions = quizFactory.countQuestions(),
         score = 0;
 
@@ -27,13 +27,11 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
             $scope.feedback = $scope.responses[0].incorrect;
         }
 
-        console.log("score from quiz controller: " + score);
-
-
         if (($scope.questNum + 1) < numQuestions) {
             $scope.displayNextBtn = true;
         } else {
-            // if the last question has been answered, wait and then redirect to score page
+            /* if the last question has been answered, wait
+            and then redirect to score page */
             $timeout(function () {
                 quizFactory.submitScore(score);
                 $location.path("score");
@@ -55,6 +53,8 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
  * CONTROLLER FOR SCORE PAGE         *
  *************************************/
 ctrl.controller('ScoreCtrl', function ($scope, quizFactory, success) {
+
     $scope.score = quizFactory.getScore();
-    console.log("this is the score: " + $scope.score);
+    $scope.summaryData = quizFactory.quizSummary();
+
 });
