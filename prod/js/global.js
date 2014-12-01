@@ -51,8 +51,7 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
     var numQuestions = quizFactory.countQuestions(),
         score = 0,
         questArray = quizFactory.randomizeQuestions(),
-        questArrayIndex = 0,
-        questionId;
+        questArrayIndex = 0;
 
 
     $scope.questNum = questArray[questArrayIndex];
@@ -111,7 +110,6 @@ services.factory('quizFactory', ['$http', function($http){
     var questions = [],
         numberOfQuestions,
         questionNumberArray = [],
-        newArray = [],
         totalScore,
         numSuccessMessages,
         scoreLevel,
@@ -128,14 +126,7 @@ services.factory('quizFactory', ['$http', function($http){
                     questionNumberArray.push(i);
                 }
 
-                // convert numbers to strings
-                var stringNumber;
-                for(i=0; i < 4; i++) {
-                    stringNumber = questionNumberArray[i].toString();
-                    newArray.push(stringNumber);
-                }
-
-                // shuffle the strings
+                // shuffle the question numbers
                 function shuffle(o) { //v1.0
                     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
                     console.log(o);
@@ -147,7 +138,7 @@ services.factory('quizFactory', ['$http', function($http){
             });
         },
         randomizeQuestions: function(){
-            return newArray;
+            return questionNumberArray;
         },
         getResponses: function(){
             return $http.get('../json/submissionResponses.json').then(function(result){
