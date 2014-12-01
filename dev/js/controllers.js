@@ -14,8 +14,7 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
     var numQuestions = quizFactory.countQuestions(),
         score = 0,
         questArray = quizFactory.randomizeQuestions(),
-        questArrayIndex = 0,
-        questionId;
+        questArrayIndex = 0;
 
 
     $scope.questNum = questArray[questArrayIndex];
