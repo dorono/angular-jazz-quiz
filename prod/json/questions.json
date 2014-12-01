@@ -1,5 +1,6 @@
     [
             {
+                "questionId" : 1,
                 "question": "What did Coltrane play?",
                 "answers": [
                     "saxophone",
@@ -7,9 +8,10 @@
                     "guitar",
                     "french horn"
                 ],
-                "correctAnswer": "question_1_answers_1"
+                "correctAnswer": 1
             },
             {
+                "questionId" : 2,
                 "question": "What did Miles play?",
                 "answers": [
                     "drums",
@@ -17,9 +19,10 @@
                     "guitar",
                     "french horn"
                 ],
-                "correctAnswer": "question_2_answers_2"
+                "correctAnswer": 2
             },
             {
+                "questionId" : 3,
                 "question": "What did Monk play?",
                 "answers": [
                     "trombone",
@@ -27,9 +30,10 @@
                     "drums",
                     "piano"
                 ],
-                "correctAnswer": "question_3_answers_4"
+                "correctAnswer": 4
             },
             {
+                "questionId" : 4,
                 "question": "What did Ray Brown play?",
                 "answers": [
                     "saxophone",
@@ -37,6 +41,6 @@
                     "bass",
                     "guitar"
                 ],
-                "correctAnswer": "question_4_answers_3"
+                "correctAnswer": 3
             }
     ]

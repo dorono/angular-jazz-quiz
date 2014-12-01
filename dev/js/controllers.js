@@ -7,16 +7,23 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
 
     $scope.quizContent = questions;
     $scope.responses = responses;
-    $scope.questNum = 0;
     $scope.data = {};
     $scope.valid = null;
     $scope.displayNextBtn = false;
 
     var numQuestions = quizFactory.countQuestions(),
-        score = 0;
+        score = 0,
+        questArray = quizFactory.randomizeQuestions(),
+        questArrayIndex = 0,
+        questionId;
 
-    $scope.submitAnswer = function() {
-        $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer, $scope.questNum, $scope.quizContent);
+
+    $scope.questNum = questArray[questArrayIndex];
+    console.log('quest num: ' + $scope.questNum);
+
+    $scope.submitAnswer = function(correctAnswer) {
+        console.log('this is the correct answer: '  + correctAnswer);
+        $scope.valid = Number($scope.data.submittedAnswer) === correctAnswer;
 
         $scope.submitted = true;
 
@@ -27,7 +34,7 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
             $scope.feedback = $scope.responses[0].incorrect;
         }
 
-        if (($scope.questNum + 1) < numQuestions) {
+        if ((questArrayIndex + 1) < numQuestions) {
             $scope.displayNextBtn = true;
         } else {
             /* if the last question has been answered, wait
@@ -41,7 +48,8 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
 
     $scope.nextQuestion = function () {
         // queue up the next question
-        $scope.questNum++;
+        questArrayIndex++;
+        $scope.questNum = questArray[questArrayIndex];
         $scope.submitted = false;
         $scope.displayNextBtn = false;
         $scope.data = {};
