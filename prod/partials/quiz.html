@@ -3,13 +3,13 @@
     <ul>
         <li ng-repeat="answer in quizContent[questNum].answers">
             <label>
-                <input type="radio" name="q_{{questNum + 1}}" value="question_{{questNum + 1}}_answers_{{$index + 1}}" ng-model="data.submittedAnswer" ng-disabled="submitted">
+                <input type="radio" name="q_{{questNum + 1}}" value="{{$index + 1}}" ng-model="data.submittedAnswer" ng-disabled="submitted">
                 {{answer}}
             </label>
         </li>
     </ul>
 </question>
-<button class="btn-default btn submit-btn" ng-click="submitAnswer()" ng-disabled="!data.submittedAnswer">Submit my answer!</button>
+<button class="btn-default btn submit-btn" ng-click="submitAnswer(quizContent[questNum].correctAnswer)" ng-disabled="!data.submittedAnswer">Submit my answer!</button>
 
 <feedback ng-show="submitted">
     <!--TODO: remove css class name strings from JS -->

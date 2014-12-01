@@ -44,16 +44,23 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
 
     $scope.quizContent = questions;
     $scope.responses = responses;
-    $scope.questNum = 0;
     $scope.data = {};
     $scope.valid = null;
     $scope.displayNextBtn = false;
 
     var numQuestions = quizFactory.countQuestions(),
-        score = 0;
+        score = 0,
+        questArray = quizFactory.randomizeQuestions(),
+        questArrayIndex = 0,
+        questionId;
 
-    $scope.submitAnswer = function() {
-        $scope.valid = quizFactory.checkAnswer($scope.data.submittedAnswer, $scope.questNum, $scope.quizContent);
+
+    $scope.questNum = questArray[questArrayIndex];
+    console.log('quest num: ' + $scope.questNum);
+
+    $scope.submitAnswer = function(correctAnswer) {
+        console.log('this is the correct answer: '  + correctAnswer);
+        $scope.valid = Number($scope.data.submittedAnswer) === correctAnswer;
 
         $scope.submitted = true;
 
@@ -64,7 +71,7 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
             $scope.feedback = $scope.responses[0].incorrect;
         }
 
-        if (($scope.questNum + 1) < numQuestions) {
+        if ((questArrayIndex + 1) < numQuestions) {
             $scope.displayNextBtn = true;
         } else {
             /* if the last question has been answered, wait
@@ -78,7 +85,8 @@ ctrl.controller('QuizCtrl', function($scope, $timeout, $location, quizFactory, q
 
     $scope.nextQuestion = function () {
         // queue up the next question
-        $scope.questNum++;
+        questArrayIndex++;
+        $scope.questNum = questArray[questArrayIndex];
         $scope.submitted = false;
         $scope.displayNextBtn = false;
         $scope.data = {};
@@ -102,6 +110,8 @@ services.factory('quizFactory', ['$http', function($http){
 
     var questions = [],
         numberOfQuestions,
+        questionNumberArray = [],
+        newArray = [],
         totalScore,
         numSuccessMessages,
         scoreLevel,
@@ -113,17 +123,36 @@ services.factory('quizFactory', ['$http', function($http){
         getQuestions: function(){
             return $http.get('../json/questions.json').then(function(result){
                 numberOfQuestions = result.data.length;
+
+                for(var i = 0; i < numberOfQuestions; i++) {
+                    questionNumberArray.push(i);
+                }
+
+                // convert numbers to strings
+                var stringNumber;
+                for(i=0; i < 4; i++) {
+                    stringNumber = questionNumberArray[i].toString();
+                    newArray.push(stringNumber);
+                }
+
+                // shuffle the strings
+                function shuffle(o) { //v1.0
+                    for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+                    console.log(o);
+                    return o;
+                }
+
+                shuffle(questionNumberArray);
                 return result.data;
             });
+        },
+        randomizeQuestions: function(){
+            return newArray;
         },
         getResponses: function(){
             return $http.get('../json/submissionResponses.json').then(function(result){
                 return result.data;
             });
-        },
-        checkAnswer: function(submittedAnswer,questionNum,questionList){
-            // check to see if answer is correct and supply appropriate response
-            return submittedAnswer === questionList[questionNum].correctAnswer;
         },
         countQuestions: function(){
             return numberOfQuestions;
@@ -170,5 +199,6 @@ services.factory('quizFactory', ['$http', function($http){
                 quizSuccessMessage: quizSuccessMessage
             }
         }
-    };
+    }
 }]);
+
