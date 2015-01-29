@@ -172,7 +172,7 @@ module.exports = function(grunt) {
                 livereload: true
             },
             gruntfile: {
-                files: 'Gruntfile.js',
+                files: 'Gruntfile.js'
             },
             html: {
                 files: '<%= config.app %>/**/*.{html,php}',
