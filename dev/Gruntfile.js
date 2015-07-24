@@ -166,6 +166,41 @@ module.exports = function(grunt) {
             }
         },
 
+
+        karma: {
+            options: {
+                files: ['<%= config.bower %>/angular/angular.js',
+                '<%= config.bower %>/angular-route/angular-route.js',
+                '<%= config.bower %>/angular-mocks/angular-mocks.js',
+                '<%= config.jsSrc %>/**/*.js']
+            },
+            unit: {
+                files: [
+                    { src: ['js_tests/**/*.js'] }
+                ],
+                frameworks: ['jasmine'],
+                singleRun: true,
+                browsers: ['PhantomJS']
+            }
+        },
+
+        /*karma: {
+            unit: {
+                options: {
+                    frameworks: ['jasmine'],
+                    singleRun: true,
+                    browsers: ['PhantomJS'],
+                    files: [
+                        '<%= config.bower %>/angular/angular.js',
+                        '<%= config.bower %>/angular-route/angular-route.js',
+                        '<%= config.bower %>/angular-mocks/angular-mocks.js',
+                        '<%= config.jsSrc %>/!**!/!*.js',
+                        'js_tests/!**!/!*.js'
+                    ]
+                }
+            }
+        },*/
+
         watch: {
             options: {
                 debounceDelay: 500,
@@ -209,5 +244,10 @@ module.exports = function(grunt) {
         'copy',
         'jshint',
         'uncss'
+    ]);
+
+    grunt.registerTask('test', [
+        'jshint',
+        'karma'
     ]);
 };

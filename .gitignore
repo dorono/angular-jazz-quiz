@@ -3,3 +3,7 @@ prod/partials/app-test.html
 
 *.idea
 bu
+dev/.sass-cache
+dev/.tmp
+node_modules
+lib

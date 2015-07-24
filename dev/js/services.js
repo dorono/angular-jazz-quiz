@@ -84,6 +84,9 @@ services.factory('quizFactory', ['$http', function($http){
                 scorePercentage: scorePercentage,
                 quizSuccessMessage: quizSuccessMessage
             }
+        },
+        testFunc: function(testVar) {
+            return testVar;
         }
     }
 }]);
