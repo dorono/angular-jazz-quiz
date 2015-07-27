@@ -172,6 +172,8 @@ module.exports = function(grunt) {
                 files: ['<%= config.bower %>/angular/angular.js',
                 '<%= config.bower %>/angular-route/angular-route.js',
                 '<%= config.bower %>/angular-mocks/angular-mocks.js',
+                '<%= config.bower %>/sinon/lib/sinon.js',
+                '<%= config.bower %>/jasmine-sinon/lib/jasmine-sinon.js',
                 '<%= config.jsSrc %>/**/*.js']
             },
             unit: {
@@ -180,7 +182,8 @@ module.exports = function(grunt) {
                 ],
                 frameworks: ['jasmine'],
                 singleRun: true,
-                browsers: ['PhantomJS']
+                browsers: ['PhantomJS'],
+                reporters: ['spec']
             }
         },
 
