@@ -1,5 +1,10 @@
 dev/js/app-test.js
 prod/partials/app-test.html
-
 *.idea
 bu
+dev/.sass-cache
+dev/.tmp
+dev/lib
+dev/node_modules
+angular-module.iml
+npm-debug.log

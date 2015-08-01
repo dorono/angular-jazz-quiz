@@ -107,7 +107,10 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                mangle: false
+                mangle: false,
+                compress: {
+                    drop_console: true
+                }
             },
             my_target: {
                 files: {
@@ -157,15 +160,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // remove all unused css
-        uncss: {
-            dist: {
-                files: {
-                    '<%= config.app %>/<%= config.cssDest %>/global.css': ['<%= config.app %>/**/*.html']
-                }
-            }
-        },
-
         watch: {
             options: {
                 debounceDelay: 500,
@@ -207,7 +201,6 @@ module.exports = function(grunt) {
         'concat',
         'uglify',
         'copy',
-        'jshint',
-        'uncss'
+        'jshint'
     ]);
 };
