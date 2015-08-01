@@ -38,9 +38,9 @@ module.exports = function(grunt) {
                     'id-unique': true,
                     'style-disabled': true,
                     'img-alt-require': true,
-                    'doctype-html5': false
+                    'doctype-html5': true
                 },
-                src: ['../prod/index.html']
+                src: ['<%= config.app %>/index.html', '<%= config.app %>/partials/ **/*.html']
             }
         },
 
@@ -157,15 +157,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // remove all unused css
-        uncss: {
-            dist: {
-                files: {
-                    '<%= config.app %>/<%= config.cssDest %>/global.css': ['<%= config.app %>/**/*.html']
-                }
-            }
-        },
-
 
         karma: {
             options: {
@@ -186,23 +177,6 @@ module.exports = function(grunt) {
                 reporters: ['spec']
             }
         },
-
-        /*karma: {
-            unit: {
-                options: {
-                    frameworks: ['jasmine'],
-                    singleRun: true,
-                    browsers: ['PhantomJS'],
-                    files: [
-                        '<%= config.bower %>/angular/angular.js',
-                        '<%= config.bower %>/angular-route/angular-route.js',
-                        '<%= config.bower %>/angular-mocks/angular-mocks.js',
-                        '<%= config.jsSrc %>/!**!/!*.js',
-                        'js_tests/!**!/!*.js'
-                    ]
-                }
-            }
-        },*/
 
         watch: {
             options: {
@@ -245,8 +219,7 @@ module.exports = function(grunt) {
         'concat',
         'uglify',
         'copy',
-        'jshint',
-        'uncss'
+        'jshint'
     ]);
 
     grunt.registerTask('test', [

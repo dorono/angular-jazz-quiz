@@ -34,21 +34,15 @@ describe('JazzQuiz.quizFactory', function () {
         }));
 
         it('should get some data from the JSON', function() {
-           expect(quizFactory.getQuestions()).toBeDefined();
+
+            var getQuestionsVar = quizFactory.getQuestions();
+
+            console.log('this is get questions: ' + getQuestionsVar);
+
+
+            expect(quizFactory.getQuestions()).toBeDefined();
         });
 
-        it('Should create an array with the same length as the number of questions', function () {
-
-            expect(quizFactory.countQuestions()).toEqual(4);
-        });
-
-        it('should have the same number of responses as questions', function() {
-            var responseArray = quizFactory.getResponses(),
-                numResponses = responseArray.length;
-
-
-            expect(numResponses).toEqual(quizFactory.countQuestions());
-        });
     });
 
 

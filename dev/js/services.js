@@ -29,6 +29,8 @@ services.factory('quizFactory', ['$http', function($http){
                 }
 
                 shuffle(questionNumberArray);
+
+
                 return result.data;
             });
         },
