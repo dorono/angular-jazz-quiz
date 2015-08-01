@@ -6,5 +6,3 @@ dev/.sass-cache
 dev/.tmp
 dev/lib
 dev/node_modules
-angular-module.iml
-npm-debug.log

@@ -65,7 +65,17 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: '<%= config.temp %>/css',
                 src: '**/*.css',
-                dest: '<%= config.temp %>/css',
+                dest: '<%= config.temp %>/css'
+            }
+        },
+
+        cssmin: {
+            build: {
+                files: {
+                    cwd: '<%= config.app %>/<%= config.cssDest %>',
+                    src: ['**/*.css'],
+                    dest: '<%= config.app %>/<%= config.cssDest %>'
+                }
             }
         },
 
@@ -80,7 +90,6 @@ module.exports = function(grunt) {
                 '!<%= config.app %>/<%= config.jsSrc %>/global.js'
             ]
         },
-
 
         // Concatenate all of our js files
         concat: {
@@ -199,8 +208,8 @@ module.exports = function(grunt) {
         'compass',
         'autoprefixer',
         'concat',
-        'uglify',
         'copy',
-        'jshint'
+        'jshint',
+        'uglify'
     ]);
 };
