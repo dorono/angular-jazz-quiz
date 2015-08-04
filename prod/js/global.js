@@ -126,20 +126,16 @@ services.factory('quizFactory', ['$http', function($http){
                     questionNumberArray.push(i);
                 }
 
-                // shuffle the question numbers
-                function shuffle(o) { //v1.0
-                    for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-                    console.log(o);
-                    return o;
-                }
-
-                shuffle(questionNumberArray);
-
-
                 return result.data;
             });
         },
+        shuffle: function(o) {
+                for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+                console.log(o);
+                return o;
+        },
         randomizeQuestions: function(){
+            this.shuffle(questionNumberArray);
             return questionNumberArray;
         },
         getResponses: function(){

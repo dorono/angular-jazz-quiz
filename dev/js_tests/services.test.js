@@ -24,23 +24,23 @@ describe('JazzQuiz.quizFactory', function () {
             $httpBackend.when('GET', '../json/questions.json')
             .respond('test'); // why do I need to have this hard-coded stuff here?
             quizFactory.getQuestions();
+            quizFactory.randomizeQuestions();
             $httpBackend.flush();
 
-            $httpBackend.when('GET', '../json/submissionResponses.json')
-            .respond('test'); // why do I need to have this hard-coded stuff here?
-            quizFactory.getResponses();
-            $httpBackend.flush();
 
         }));
 
-        it('should get some data from the JSON', function() {
+        it('should should have the same number of items in the randomized array as the original array', function() {
 
-            var getQuestionsVar = quizFactory.getQuestions();
+            var randomizedArray = quizFactory.randomizeQuestions(),
+                originalQuestions = quizFactory.getQuestions(),
+                originalQuestionsArray = Object.keys(originalQuestions).map(function(key) {
+                    return originalQuestions[key]
+                });
 
-            console.log('this is get questions: ' + getQuestionsVar);
+            console.log('originalQuestionsArray: ' + originalQuestionsArray);
 
-
-            expect(quizFactory.getQuestions()).toBeDefined();
+            expect(randomizedArray.length).toEqual(originalQuestionsArray.length);
         });
 
     });
