@@ -87,7 +87,7 @@ services.factory('quizFactory', ['$http', function($http){
                 quizSuccessMessage = successMessages[numSuccessMessages - 1].message;
             } else {
                 /* otherwise, locate the message that sits
-                within the appropriate range of scores */
+                 within the appropriate range of scores */
                 var i;
                 for (i = 0; i < numSuccessMessages; i++) {
                     if (scorePercentage < (scoreLevel * (i + 1))) {
@@ -104,4 +104,3 @@ services.factory('quizFactory', ['$http', function($http){
         }
     }
 }]);
-
