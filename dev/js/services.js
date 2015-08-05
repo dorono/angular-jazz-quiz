@@ -17,10 +17,37 @@ services.factory('quizFactory', ['$http', function($http){
             return $http.get('../json/questions.json').then(function(result){
                 numberOfQuestions = result.data.length;
 
+                // clear the question number array to avoid repetition
+                if (questionNumberArray.length) {
+                    questionNumberArray = [];
+                }
+
                 for(var i = 0; i < numberOfQuestions; i++) {
                     questionNumberArray.push(i);
                 }
 
+<<<<<<< HEAD
+=======
+                // randomize the array
+                function shuffle(array) {
+                    var m = array.length, t, i;
+
+                    // While there remain elements to shuffle...
+                    while (m) {
+                        // Pick a remaining element…
+                        i = Math.floor(Math.random() * m--);
+
+                        // And swap it with the current element.
+                        t = array[m];
+                        array[m] = array[i];
+                        array[i] = t;
+                    }
+
+                    return array;
+                }
+
+                shuffle(questionNumberArray);
+>>>>>>> master
                 return result.data;
             });
         },
@@ -30,7 +57,11 @@ services.factory('quizFactory', ['$http', function($http){
                 return o;
         },
         randomizeQuestions: function(){
+<<<<<<< HEAD
             this.shuffle(questionNumberArray);
+=======
+            console.log('here is the array of question indices: '+ questionNumberArray);
+>>>>>>> master
             return questionNumberArray;
         },
         getResponses: function(){
@@ -44,8 +75,8 @@ services.factory('quizFactory', ['$http', function($http){
         getSuccessMessages: function(){
             return $http.get('../json/successMessages.json').then(function(result) {
                 successMessages = result.data;
-                numSuccessMessages = result.data.length;
-                return result.data;
+                numSuccessMessages = successMessages.length;
+                return successMessages;
             });
         },
         submitScore: function(quizScore){

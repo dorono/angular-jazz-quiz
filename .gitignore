@@ -1,9 +1,8 @@
 dev/js/app-test.js
 prod/partials/app-test.html
-
 *.idea
 bu
 dev/.sass-cache
 dev/.tmp
-node_modules
-lib
+dev/lib
+dev/node_modules

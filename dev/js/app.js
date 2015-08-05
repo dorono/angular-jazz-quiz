@@ -29,7 +29,7 @@
             }
         });
 
-        $routeProvider.otherwise({redirectTo: '/'});
+        $routeProvider.otherwise({redirectTo: '/#/'});
 
     }]);
 
