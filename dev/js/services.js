@@ -35,8 +35,7 @@ services.factory('quizFactory', ['$http', function($http){
             return o;
         },
         randomizeQuestions: function(){
-            this.shuffle(questionNumberArray);
-            return questionNumberArray;
+            return this.shuffle(questionNumberArray);
         },
         getResponses: function(){
             return $http.get('../json/submissionResponses.json').then(function(result){
