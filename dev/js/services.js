@@ -26,42 +26,16 @@ services.factory('quizFactory', ['$http', function($http){
                     questionNumberArray.push(i);
                 }
 
-<<<<<<< HEAD
-=======
-                // randomize the array
-                function shuffle(array) {
-                    var m = array.length, t, i;
-
-                    // While there remain elements to shuffle...
-                    while (m) {
-                        // Pick a remaining element…
-                        i = Math.floor(Math.random() * m--);
-
-                        // And swap it with the current element.
-                        t = array[m];
-                        array[m] = array[i];
-                        array[i] = t;
-                    }
-
-                    return array;
-                }
-
-                shuffle(questionNumberArray);
->>>>>>> master
                 return result.data;
             });
         },
         shuffle: function(o) {
-                for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-                console.log(o);
-                return o;
+            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            console.log(o);
+            return o;
         },
         randomizeQuestions: function(){
-<<<<<<< HEAD
             this.shuffle(questionNumberArray);
-=======
-            console.log('here is the array of question indices: '+ questionNumberArray);
->>>>>>> master
             return questionNumberArray;
         },
         getResponses: function(){
@@ -75,8 +49,8 @@ services.factory('quizFactory', ['$http', function($http){
         getSuccessMessages: function(){
             return $http.get('../json/successMessages.json').then(function(result) {
                 successMessages = result.data;
-                numSuccessMessages = successMessages.length;
-                return successMessages;
+                numSuccessMessages = result.data.length;
+                return result.data;
             });
         },
         submitScore: function(quizScore){
@@ -99,7 +73,7 @@ services.factory('quizFactory', ['$http', function($http){
                 quizSuccessMessage = successMessages[numSuccessMessages - 1].message;
             } else {
                 /* otherwise, locate the message that sits
-                within the appropriate range of scores */
+                 within the appropriate range of scores */
                 var i;
                 for (i = 0; i < numSuccessMessages; i++) {
                     if (scorePercentage < (scoreLevel * (i + 1))) {
@@ -116,4 +90,3 @@ services.factory('quizFactory', ['$http', function($http){
         }
     }
 }]);
-
