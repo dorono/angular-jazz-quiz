@@ -35,8 +35,7 @@ services.factory('quizFactory', ['$http', function($http){
             return o;
         },
         randomizeQuestions: function(){
-            this.shuffle(questionNumberArray);
-            return questionNumberArray;
+            return this.shuffle(questionNumberArray);
         },
         getResponses: function(){
             return $http.get('../json/submissionResponses.json').then(function(result){
@@ -49,7 +48,7 @@ services.factory('quizFactory', ['$http', function($http){
         getSuccessMessages: function(){
             return $http.get('../json/successMessages.json').then(function(result) {
                 successMessages = result.data;
-                numSuccessMessages = result.data.length;
+                numSuccessMessages = successMessages.length;
                 return result.data;
             });
         },
