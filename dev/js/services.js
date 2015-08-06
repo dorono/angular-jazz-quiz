@@ -48,7 +48,7 @@ services.factory('quizFactory', ['$http', function($http){
         getSuccessMessages: function(){
             return $http.get('../json/successMessages.json').then(function(result) {
                 successMessages = result.data;
-                numSuccessMessages = result.data.length;
+                numSuccessMessages = successMessages.length;
                 return result.data;
             });
         },
