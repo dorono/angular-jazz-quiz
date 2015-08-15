@@ -33,14 +33,9 @@ describe('JazzQuiz.quizFactory', function () {
         it('should should have the same number of items in the randomized array as the original array', function() {
 
             var randomizedArray = quizFactory.randomizeQuestions(),
-                originalQuestions = quizFactory.getQuestions(),
-                originalQuestionsArray = Object.keys(originalQuestions).map(function(key) {
-                    return originalQuestions[key]
-                });
+                originalQuestions = quizFactory.countQuestions();
 
-            console.log('originalQuestionsArray: ' + originalQuestionsArray);
-
-            expect(randomizedArray.length).toEqual(originalQuestionsArray.length);
+            expect(randomizedArray.length).toEqual(originalQuestions);
         });
 
     });
